@@ -1,0 +1,17 @@
+GET https://localhost:9000/
+
+
+###
+
+POST https://localhost:9000/vendors
+Content-Type: application/json 
+
+{
+    "name": "Docker, Inc.",
+    "url": "https://docker.io",
+    "pointOfContact": {
+        "name": "Bill Whale",
+        "email": "bill@docker.io",
+        "phone": "999-999-9999"
+    }
+}

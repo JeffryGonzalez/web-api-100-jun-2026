@@ -1,4 +1,5 @@
 var builder = WebApplication.CreateBuilder(args);
+builder.AddServiceDefaults(); // ServiceDefaults Extension
 
 // Add services to the container.
 
@@ -8,6 +9,7 @@ builder.Services.AddOpenApi();
 
 // Above this line is host and service configuration - can't do that after you build the app.
 var app = builder.Build();
+app.MapDefaultEndpoints(); // ServiceDefaults - this is mostly health checks.
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
