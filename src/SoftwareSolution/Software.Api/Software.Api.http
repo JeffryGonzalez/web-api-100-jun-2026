@@ -1,0 +1,6 @@
+@Software.Api_HostAddress = https://localhost:9000
+
+GET {{Software.Api_HostAddress}}/status
+Accept: application/json
+
+###
