@@ -7,11 +7,15 @@ POST https://localhost:9000/vendors
 Content-Type: application/json 
 
 {
-    "name": "Docker, Inc.",
-    "url": "https://docker.io",
+    "name": "Microsoft",
+    "url": "https://www.microsoft.com",
     "pointOfContact": {
-        "name": "Bill Whale",
-        "email": "bill@docker.io",
+        "name": "Satya Nadella",
+        "email": "Satya@microsoft.com",
         "phone": "999-999-9999"
     }
 }
+
+
+###
+GET https://localhost:9000/vendors/2d31bc2e-2a67-4b0f-8130-759b1c6b3f23

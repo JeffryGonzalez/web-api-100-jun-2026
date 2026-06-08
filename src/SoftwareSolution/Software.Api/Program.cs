@@ -1,11 +1,28 @@
+using Marten;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults(); // ServiceDefaults Extension
+
+
+var connectionString = builder.Configuration.GetConnectionString("software") ?? throw new Exception("No Connection String");
+
+builder.Services.AddMarten(options =>
+{
+    options.Connection(connectionString);
+    // add an IDocumentStore to the "services collection", and a "singleton" service to manage connections.
+
+}).UseLightweightSessions();
+// appsetting.json
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(config =>
+{
+    
+});
+    
 
 // Above this line is host and service configuration - can't do that after you build the app.
 var app = builder.Build();
