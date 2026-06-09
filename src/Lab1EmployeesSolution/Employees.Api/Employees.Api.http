@@ -1,6 +1,44 @@
-@Employees.Api_HostAddress = http://localhost:5250
+@Employees.Api_HostAddress = https://localhost:5003
 
-GET {{Employees.Api_HostAddress}}/weatherforecast/
+### Add an employee (valid) - expect 201 Created + Location header
+POST {{Employees.Api_HostAddress}}/employees
+Content-Type: application/json
+
+{
+  "fullName": "Sue Jones",
+  "salary": 95000,
+  "department": "DEV"
+}
+
+### Add an employee (invalid department) - expect 400 with validation errors
+POST {{Employees.Api_HostAddress}}/employees
+Content-Type: application/json
+
+{
+  "fullName": "Bad Department",
+  "salary": 95000,
+  "department": "DEVELOPMENT"
+}
+
+### Add an employee (missing salary) - expect 400, the `required` keyword rejects it
+POST {{Employees.Api_HostAddress}}/employees
+Content-Type: application/json
+
+{
+  "fullName": "No Salary",
+  "department": "QAA"
+}
+
+### Get one employee by id - paste an id returned from a POST above
+GET {{Employees.Api_HostAddress}}/employees/00000000-0000-0000-0000-000000000000
+Accept: application/json
+
+### Get one employee with a non-Guid id - expect 404 (route constraint never matches)
+GET {{Employees.Api_HostAddress}}/employees/not-a-guid
+Accept: application/json
+
+### List all employees - expect id, fullName, department only (no salary)
+GET {{Employees.Api_HostAddress}}/employees
 Accept: application/json
 
 ###

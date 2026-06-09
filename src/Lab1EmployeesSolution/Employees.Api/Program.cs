@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
-builder.AddNpgsqlDataSource(connectionName: "employees-db");
+builder.AddNpgsqlDataSource(connectionName: "employees");
 
 builder.Services.AddMarten(options =>
 {
