@@ -19,6 +19,7 @@ public class Api : ControllerBase
     
     public async Task<ActionResult<VendorEntity>> AddVendorAsync(
         [FromBody] VendorCreateModel request,
+        [FromServices] ILogger<Api> logger, 
         [FromServices] IDocumentSession session)
     {
         // Backing Service - database, cache, message broker, etc. NEVER USE THE NEW
@@ -30,6 +31,7 @@ public class Api : ControllerBase
             PointOfContact = request.PointOfContact,
             CreatedAt = DateTime.UtcNow,
         };
+        logger.LogInformation("Just added a new vendor {vendor}", entity.Name);
         session.Store(entity);
         await session.SaveChangesAsync();
         return Created($"/vendors/{entity.Id}", entity);

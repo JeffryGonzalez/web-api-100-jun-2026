@@ -1,6 +1,8 @@
 using Marten;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateSlimBuilder(args);
+
+builder.Services.AddControllers();
 builder.AddServiceDefaults(); // ServiceDefaults Extension
 
 
@@ -16,7 +18,7 @@ builder.Services.AddMarten(options =>
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi(config =>
 {
