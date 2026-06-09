@@ -5,9 +5,10 @@ GET https://localhost:9000/
 
 POST https://localhost:9000/vendors
 Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InN1ZUBjb21wYW55LmNvbSIsInN1YiI6InN1ZUBjb21wYW55LmNvbSIsImp0aSI6IjY3OTY5ZWU0Iiwicm9sZSI6WyJTb2Z0d2FyZUNlbnRlciIsIk1hbmFnZXIiXSwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6OTAwMCIsIm5iZiI6MTc4MTAzNjczOSwiZXhwIjoxNzg4OTg1NTM5LCJpYXQiOjE3ODEwMzY3NDEsImlzcyI6ImRvdG5ldC11c2VyLWp3dHMifQ.wNZO9MA1kIR5usmQ4QP_ocNfACwzCR1lQLIapck9SWk
 
 {
-    "name": "Microsoft",
+    "name": "Netscape",
     "url": "https://www.microsoft.com",
     "pointOfContact": {
         "name": "Satya Nadella",
@@ -18,4 +19,4 @@ Content-Type: application/json
 
 
 ###
-GET https://localhost:9000/vendors/2d31bc2e-2a67-4b0f-8130-759b1c6b3f23
+GET https://localhost:9000/vendors/108a7f68-27eb-4fd5-9738-a8bced68e964

@@ -1,10 +1,20 @@
 using Marten;
 
-var builder = WebApplication.CreateSlimBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.AddServiceDefaults(); // ServiceDefaults Extension
+builder.Services.AddSingleton(sp => TimeProvider.System);
+builder.Services.AddAuthentication().AddJwtBearer(options =>
+{
+   // this block left intentionally blank.
+});
 
+builder.Services.AddAuthorizationBuilder().AddPolicy("SoftwareCenterManager", policy =>
+{
+    policy.RequireRole("SoftwareCenter");
+    policy.RequireRole("Manager");
+});
 
 var connectionString = builder.Configuration.GetConnectionString("software") ?? throw new Exception("No Connection String");
 
@@ -38,7 +48,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection(); // If a request comes in using http, redirect them back to https. Turn off HTTP.
 
-app.UseAuthorization(); // We'll talk about this.
+app.UseAuthentication(); // Given an identity, who is allowed to do what?
+app.UseAuthorization(); // Determining Identity
 
 app.MapControllers(); // Need to have the builder.Services.AddController() above, this uses reflection to create your routes.
 // GET /status = StatusController Then call GetTheStatus and return to the user-agent whatever that returns.
