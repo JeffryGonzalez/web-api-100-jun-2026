@@ -13,7 +13,7 @@ public class Api : ControllerBase
 
     [HttpPost("/vendors")]
     [Authorize(Policy = "SoftwareCenterManager")]
-    public async Task<ActionResult<VendorEntity>> AddVendorAsync(
+    public async Task<ActionResult<VendorDetailsModel>> AddVendorAsync(
         [FromBody] VendorCreateModel request,
         [FromServices] ILogger<Api> logger, 
         [FromServices] IDocumentSession session,

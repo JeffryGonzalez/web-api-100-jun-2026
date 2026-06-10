@@ -8,6 +8,11 @@ public class HttpContextRequestinUserLookup(IHttpContextAccessor httpContextAcce
         {
             throw new InvalidOperationException("Use this in the context of an Http request only");
         }
+        // Identity.Name x003809
+
+        // insert into userlog (sub, name) values (x003809, Guid.NewGuid())
         return httpContextAccessor.HttpContext.User.Identity?.Name ?? string.Empty;
     }
 }
+
+

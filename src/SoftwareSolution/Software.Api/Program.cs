@@ -1,13 +1,16 @@
+
 using Marten;
+using Software.Api.Catalog;
 using Software.Api.Software;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddValidation();
 builder.Services.AddControllers();
 builder.AddServiceDefaults(); // ServiceDefaults Extension
 builder.Services.AddSingleton<TimeProvider>(sp => TimeProvider.System);
 builder.Services.AddScoped<ILookupRequestingUsers, HttpContextRequestinUserLookup>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.UseCatalogServices();
 builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
    // this block left intentionally blank.
@@ -53,6 +56,9 @@ app.UseHttpsRedirection(); // If a request comes in using http, redirect them ba
 
 app.UseAuthentication(); // Given an identity, who is allowed to do what?
 app.UseAuthorization(); // Determining Identity
+
+// only do this if we are in the test
+app.MapCatalogEndpoints();
 
 app.MapControllers(); // Need to have the builder.Services.AddController() above, this uses reflection to create your routes.
 // GET /status = StatusController Then call GetTheStatus and return to the user-agent whatever that returns.
