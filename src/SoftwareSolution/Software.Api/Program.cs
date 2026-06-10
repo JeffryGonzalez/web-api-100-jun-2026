@@ -1,10 +1,13 @@
 using Marten;
+using Software.Api.Software;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.AddServiceDefaults(); // ServiceDefaults Extension
-builder.Services.AddSingleton(sp => TimeProvider.System);
+builder.Services.AddSingleton<TimeProvider>(sp => TimeProvider.System);
+builder.Services.AddScoped<ILookupRequestingUsers, HttpContextRequestinUserLookup>();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
    // this block left intentionally blank.

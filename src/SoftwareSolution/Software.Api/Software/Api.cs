@@ -27,6 +27,8 @@ public class Api : ControllerBase
         [FromServices] TimeProvider clock
         )
     {
+        // We know the person is logged in, a manager, in the software center
+        // and the data they passed is "good"
         // Backing Service - database, cache, message broker, etc. NEVER USE THE NEW
         var entity = new VendorEntity
         {
@@ -37,6 +39,7 @@ public class Api : ControllerBase
             CreatedAt = clock.GetUtcNow(),
             CreatedBy = userLookup.GetRequestingUserId()
         };
+        
         logger.LogInformation("Just added a new vendor {vendor}", entity.Name);
         session.Store(entity);
         await session.SaveChangesAsync();

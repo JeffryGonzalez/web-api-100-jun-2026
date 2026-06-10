@@ -71,6 +71,6 @@ public class AddingANewVendor(VendorsFixture fixture)
         Assert.NotNull(savedEntity);
         Assert.Equal("carl@netscape.com", savedEntity.CreatedBy);
 
-        var x = 12;
+  
     }
 }
