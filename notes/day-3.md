@@ -18,7 +18,7 @@ Once you are in, please start Docker Desktop.
 - Design PUT
 
 - Catalog Items
-
+  
 ## Today
 
 - Day 2 Review
