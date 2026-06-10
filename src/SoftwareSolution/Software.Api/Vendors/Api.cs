@@ -1,6 +1,7 @@
 ﻿using Marten;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Software.Api.Software;
 
 namespace Software.Api.Vendors;
@@ -72,10 +73,13 @@ public class Api : ControllerBase
     }
 
     [HttpGet("/vendors")]
-    public async Task<ActionResult> GetVendorsAsync([FromServices] IDocumentSession session,
+    public async Task<ActionResult> GetVendorsAsync(
+        [FromServices] IDocumentSession session,
         [FromQuery] int page = 1, [FromQuery] int pageSize = 10,
+        [FromQuery] string name = "",
         CancellationToken token = default)
     {
+     
         var results = await session.Query<VendorEntity>()
             .OrderBy(v => v.Name)
             .Skip((page - 1) * pageSize)
@@ -111,7 +115,17 @@ public class Api : ControllerBase
     {
         // if the vendor does not exist, return 404
         // 
+        var savedVendor = await session.Query<VendorEntity>()
+            .Where(v => v.Id == id)
+            .SingleOrDefaultAsync();
+        if (savedVendor is null) { return NotFound(); }
+
+        savedVendor.PointOfContact = request;
+
+        session.Store(savedVendor);
+        await session.SaveChangesAsync();
         return NoContent();
+
     }
 }
 
