@@ -19,14 +19,5 @@ Once you are in, please start Docker Desktop.
 - Continuing with Vendors
     - Authn/Authz
 
-## RIGHT AFTER LUNCH
-
-- Additional Stuff
-    - Getting your code up to Github
-- Show `GET /vendors` - pagination
-- Design DELETE
-- Design PUT
-
-- Catalog Items
 
 
