@@ -1,21 +1,14 @@
-﻿using JasperFx.Core;
-using Marten;
+﻿using Marten;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
+using Software.Api.Software;
 
-namespace Software.Api.Software;
+namespace Software.Api.Vendors;
 
 [ApiController]
 // This "ApiController" says "validate the request model before calling the method"
 public class Api : ControllerBase
 {
-    //private IDocumentSession _documentSession;
-
-    //public Api(IDocumentSession documentSession)
-    //{
-    //    _documentSession = documentSession;
-    //}
 
     [HttpPost("/vendors")]
     [Authorize(Policy = "SoftwareCenterManager")]
@@ -77,39 +70,48 @@ public class Api : ControllerBase
         };
         
     }
+
+    [HttpGet("/vendors")]
+    public async Task<ActionResult> GetVendorsAsync([FromServices] IDocumentSession session,
+        [FromQuery] int page = 1, [FromQuery] int pageSize = 10,
+        CancellationToken token = default)
+    {
+        var results = await session.Query<VendorEntity>()
+            .OrderBy(v => v.Name)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(v => new VendorSummaryModel()
+            {
+                Id = v.Id,
+                Name = v.Name,
+                Url = v.Url
+            })
+            .ToListAsync(token);
+        
+        var response = new VendorSummary
+        {
+            Vendors = results,
+            Page = page,
+            PageSize = pageSize
+        };
+        return Ok(response);
+    }
+
+    [HttpDelete("/vendors/{id:guid}")]
+    public async Task<ActionResult> DeleteAsync(Guid id, [FromServices] IDocumentSession session)
+    {
+        // only the person that created it can delete it - otherwise 403,
+        // can't delete if it has catalog items.
+        return NoContent();
+    }
+
+    [HttpPut("/vendors/{id:guid}/point-of-contact")]
+    public async Task<ActionResult> ReplacePointOfContactAsync(Guid id, [FromServices] IDocumentSession session,
+        [FromBody] VendorPointOfContact request)
+    {
+        // if the vendor does not exist, return 404
+        // 
+        return NoContent();
+    }
 }
 
-
-public class VendorEntity
-{
-    public Guid Id { get; set; }
-    public required string Name { get; init; }
-    public required string Url { get; init; }
-    public required VendorPointOfContact PointOfContact { get; init; }
-    public DateTimeOffset CreatedAt { get; set; }
-    public string CreatedBy { get; set; } = string.Empty;
-}
-
-public record VendorDetailsModel
-{
-    public Guid Id { get; set; }
-    public required string Name { get; init; }
-    public required string Url { get; init; }
-    public required VendorPointOfContact PointOfContact { get; init; }
-}
-
-public record VendorPointOfContact
-{
-    public required string Name { get; init; }
-    public string Email { get; init; } = string.Empty;
-    public string Phone { get; init;  } = string.Empty;
-}
-
-public record VendorCreateModel
-{
-    [MinLength(5), MaxLength(100)]
-    public required string Name { get; init;  }
-    [Url]
-    public required string Url { get; init; }
-    public required VendorPointOfContact PointOfContact { get; init; } 
-}
